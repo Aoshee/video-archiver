@@ -1,0 +1,24 @@
+{% extends "bootstrap/base.html" %}
+{% set active_page = "index" %}
+
+{% block title %}Add Video - Video Archiver{% endblock %}
+
+{% include 'navbar.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Add a Video</h2>
+    {% for error in form.url.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}<br>
+    <form action="/add" method="post" name="add">
+        {{ form.hidden_tag() }}
+        {{ form.url }}<br>
+        {{ form.submit }}
+  </form>
+</div>
+{% endblock %}
+
+{% block head %}
+{{super()}}
+{% endblock %}

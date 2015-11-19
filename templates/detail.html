@@ -1,0 +1,84 @@
+{% extends "bootstrap/base.html" %}
+{% set active_page = "detail" %}
+
+{% block title %}Download {{ download.dl_id }} Details - Video Archiver{% endblock %}
+
+{% include 'navbar.html' %}
+
+{% block content %}
+<div class="container">
+    <div id="detail-header" class="row">
+        <div class="col-md-9">
+            <h2>Details For Download {{ download.dl_id }}</h2>
+            <h4>{{ download.get_state() }}</h4>
+        </div>
+        <div class="col-md-3">
+            <button id="start-button" class="btn btn-success" type="button">Start</button>
+            <button id="stop-button" class="btn btn-danger" type="button">Stop</button>
+        </div>
+    </div>
+    <hr>
+
+    <div>
+        <h4>Info:</h4>
+        <div style="margin-left: 20px">
+            <p>{{ download.get_title() }}</p>
+            <p>URL: <a href="{{ download.url }}">{{ download.url }}</a></p>
+        </div>
+    </div>
+    <hr>
+
+    <div>
+        <h4>Stats:</h4>
+        <div style="margin-left: 20px">
+            <p>Started: {{ download.start_time.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            <p>Elapsed Time: <span id="elapsed_time">{{ download.get_elapsed_time() }}</span> sec</p>
+            <p>Downloaded/Total Size: <span id="downloaded_bytes">{{ download.get_size() }}</span>/<span id="total_bytes">{{ download.get_total_size() }}</span> (<span id="percent_done">{{ download.get_progress_percent() }}</span>%)</p>
+        </div>
+    </div>
+    <hr>
+
+    <div>
+        <h4>Log:</h4>
+        <pre id="log">{{ download.get_log() }}</pre>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block head %}
+{{super()}}
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+<script type="text/javascript">
+    var dl_id = {{ download.dl_id }};
+
+    // Stats updating
+    setInterval(function() {
+        $.getJSON("/stats/"+dl_id+"", function(data){
+            // Returns a dictionary/object
+            // The keys in the dictionary/object match with the id's of the HTML elements the value is for
+            $.each(data, function(k,v) {
+                $("#"+k).text(v);
+            });
+        });
+    }, 1000);
+
+    // Log updating
+    setInterval(function() {
+        $.ajax({url: "/log/"+dl_id+"", success: function(result){
+            $("#log").text(result);
+        }});
+    }, 3000);
+
+    $("#start-button").click(function() {
+        $.ajax({url: "/start/"+dl_id+""});
+    });
+
+    $("#stop-button").click(function() {
+        $.ajax({url: "/stop/"+dl_id+""});
+    });
+</script>
+{% endblock %}

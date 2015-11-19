@@ -1,0 +1,42 @@
+{% extends "bootstrap/base.html" %}
+{% set active_page = "index" %}
+
+{% block title %}Video Archiver{% endblock %}
+
+{% include 'navbar.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Active Downloads</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Progress</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for downloader in downloaders %}
+                <tr>
+                    <td><a href="/detail/{{ downloader.dl_id }}">{{ downloader.dl_id }}</a></td>
+                    <td><a href="/detail/{{ downloader.dl_id }}">{{ downloader.get_title() }}</a></td>
+                    <td>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="{{ downloader.get_progress_percent() }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ downloader.get_progress_percent() }}%;">
+                                <span class="sr-only">{{ downloader.get_progress_percent() }}% Complete</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block head %}
+{{super()}}
+{% endblock %}
