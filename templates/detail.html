@@ -3,7 +3,13 @@
 
 {% block title %}Download {{ download.dl_id }} Details - Video Archiver{% endblock %}
 
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block navbar %}
 {% include 'navbar.html' %}
+{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -46,12 +52,8 @@
 </div>
 {% endblock %}
 
-{% block head %}
-{{super()}}
-{% endblock %}
-
 {% block scripts %}
-{{super()}}
+{{ super() }}
 <script type="text/javascript">
     var dl_id = {{ download.dl_id }};
 

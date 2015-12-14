@@ -3,7 +3,13 @@
 
 {% block title %}Video Archiver{% endblock %}
 
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block navbar %}
 {% include 'navbar.html' %}
+{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -37,6 +43,3 @@
 </div>
 {% endblock %}
 
-{% block head %}
-{{super()}}
-{% endblock %}

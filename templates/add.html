@@ -1,24 +1,32 @@
 {% extends "bootstrap/base.html" %}
-{% set active_page = "index" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% set active_page = "add" %}
 
 {% block title %}Add Video - Video Archiver{% endblock %}
 
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block navbar %}
 {% include 'navbar.html' %}
+{% endblock %}
 
 {% block content %}
 <div class="container">
     <h2>Add a Video</h2>
-    {% for error in form.url.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}<br>
-    <form action="/add" method="post" name="add">
-        {{ form.hidden_tag() }}
-        {{ form.url }}<br>
-        {{ form.submit }}
+    <hr>
+
+    <form action="/add" method="post" name="add" class="center-block" style="width: 600px">
+        {{ wtf.quick_form(form, button_map={'submit': 'primary'}) }}
   </form>
 </div>
 {% endblock %}
 
-{% block head %}
-{{super()}}
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript">
+    // TODO: disable day/time selection if mode != scheduled
+</script>
 {% endblock %}
